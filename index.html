@@ -1,49 +1,46 @@
-import {
-  update as updateSnake,
-  draw as drawSnake,
-  SNAKE_SPEED,
-  getSnakeHead,
-  snakeIntersection,
-} from "./snake.js";
-import { update as updateFood, draw as drawFood } from "./food.js";
-import { outsideGrid } from "./grid.js";
 
-let lastRenderTime = 0;
-let gameOver = false;
-const gameBoard = document.getElementById("game-board");
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snake game</title>
 
-function main(currentTime) {
-  if (gameOver) {
-    if (confirm("You lost. Press ok to restart.")) {
-      window.location = "/";
-    }
-    return;
-  }
+    <style>
+      body {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background: black;
+      }
 
-  window.requestAnimationFrame(main);
-  const secondsSinceLastRender = (currentTime - lastRenderTime) / 1000;
-  if (secondsSinceLastRender < 1 / SNAKE_SPEED) return;
+      #game-board {
+        background-color: #ccc;
+        width: 100vmin;
+        height: 100vmin;
+        display: grid;
+        grid-template-rows: repeat(21, 1fr);
+        grid-template-columns: repeat(21, 1fr);
+      }
 
-  lastRenderTime = currentTime;
+      .snake {
+        background-color: yellow;
+        border: 0.25vmin solid black;
+      }
 
-  update();
-  draw();
-}
+      .food {
+        background-color: green;
+        border: 0.25vmin solid black;
+      }
+    </style>
+    <script src="game.js" defer type="module"></script>
+  </head>
 
-window.requestAnimationFrame(main);
-
-function update() {
-  updateSnake();
-  updateFood();
-  checkDeath();
-}
-
-function draw() {
-  gameBoard.innerHTML = "";
-  drawSnake(gameBoard);
-  drawFood(gameBoard);
-}
-
-function checkDeath() {
-  gameOver = outsideGrid(getSnakeHead()) || snakeIntersection();
-}
+  <body>
+    <div id="game-board"></div>
+  </body>
+</html>
